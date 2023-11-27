@@ -1,12 +1,13 @@
 type UserserDto = {
-    userId   : Number,
-    name     : string,
-    userName : string,
-    password : string,
-    email    : string,
-    token    : string,
-    time     : string,
-    isActive : Boolean
+    userId      : Number,
+    name        : String,
+    userName    : String,
+    password    : String,
+    email       : String,
+    token       : String,
+    time        : String,
+    isInSession : Boolean,
+    isActive    : Boolean
 }
 
 type AddUserInDatabase    = ( user : UserserDto ) => Promise<UserserDto>

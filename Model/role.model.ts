@@ -1,13 +1,13 @@
 type RoleDto = {
-    roleId      : Number,
-    roleName    : String,
-    description : String
+    roleId      : number,
+    roleName    : string,
+    description : string
 }
 
 type AddRoleInDatabase      = (role:RoleDto)  => Promise<RoleDto>
-type GetRoleFromDatabase    = (roleId:Number) => Promise<RoleDto>
+type GetRoleFromDatabase    = (roleId:number) => Promise<RoleDto>
 type UpdateRoleInDatabase   = (role:RoleDto)  => Promise<RoleDto>
-type DeleteRoleFromDatabase = (roleId:Number) => Promise<RoleDto>
+type DeleteRoleFromDatabase = (roleId:number) => Promise<RoleDto>
 
 interface RoleModel {
     addRoleinDatabase      : AddRoleInDatabase,
@@ -35,7 +35,7 @@ class Role implements RoleModel{
             throw error;
         }
     } 
-    public async getRole (roleId:Number) {
+    public async getRole (roleId:number) {
         try {
             return await this.getRoleFromDatabase( roleId );   
         } catch (error) {
@@ -49,7 +49,7 @@ class Role implements RoleModel{
             throw error;
         }
     } 
-    public async deleteRole (roleId:Number) {
+    public async deleteRole (roleId:number) {
         try {
             return await this.deleteRoleFromDatabase( roleId );   
         } catch (error) {

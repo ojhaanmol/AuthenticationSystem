@@ -1,19 +1,19 @@
-type UserserDto = {
-    userId      : Number,
-    name        : String,
-    userName    : String,
-    password    : String,
-    email       : String,
-    token       : String,
-    time        : String,
-    isInSession : Boolean,
-    isActive    : Boolean
+type UserDto = {
+    userId      : number,
+    name        : string,
+    userName    : string,
+    password    : string,
+    email       : string,
+    token       : string,
+    time        : string,
+    isInSession : boolean,
+    isActive    : boolean
 }
 
-type AddUserInDatabase    = ( user : UserserDto ) => Promise<UserserDto>
-type GetUserFromDatabase  = ( userId : Number ) => Promise<UserserDto>
-type UpdateUserInDatabase = ( user : UserserDto ) => Promise<UserserDto>
-type DeleteUseFromDatabas = ( userId : Number ) => Promise<UserserDto>
+type AddUserInDatabase    = ( user : UserDto ) => Promise<UserDto>
+type GetUserFromDatabase  = ( userId : number ) => Promise<UserDto>
+type UpdateUserInDatabase = ( user : UserDto ) => Promise<UserDto>
+type DeleteUseFromDatabas = ( userId : number ) => Promise<UserDto>
 
 interface UserModel {
     addUserInDatabase     : AddUserInDatabase,
@@ -35,7 +35,7 @@ class User implements UserModel{
         this.deleteUseFromDatabase = deleteUser;
     }
 
-    public async addAUser(user:UserserDto){
+    public async addAUser(user:UserDto){
         try {
             return await this.addUserInDatabase(user);
         } catch (error) {
@@ -51,7 +51,7 @@ class User implements UserModel{
         }
     }
 
-    public async updateUser(user:UserserDto){
+    public async updateUser(user:UserDto){
         try {
             return await this.updateUserInDatabase(user)
         } catch (error) {
@@ -59,7 +59,7 @@ class User implements UserModel{
         }
     }
 
-    public async deleteUser(userId:Number){
+    public async deleteUser(userId:number){
         try {
             return await this.deleteUseFromDatabase(userId)
         } catch (error) {
@@ -69,4 +69,4 @@ class User implements UserModel{
 }
 
 export default User;
-export {UserserDto}
+export {UserDto}

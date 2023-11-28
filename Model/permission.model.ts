@@ -4,12 +4,12 @@ type PermissionDto = {
 }
 
 type AddPermissionToDatabase      = ( permission:PermissionDto) => Promise<PermissionDto>
-type GetPermissionFromDatabase    = ( permissionId:Number ) => Promise<PermissionDto>
+type GetPermissionFromDatabase    = ( permissionId:number ) => Promise<PermissionDto>
 type UpdatePermissionToDatabase   = ( permission:PermissionDto) => Promise<PermissionDto>
-type DeletePermissionFromDatabase = ( permissionId:Number ) => Promise<PermissionDto>
+type DeletePermissionFromDatabase = ( permissionId:number ) => Promise<PermissionDto>
 
 interface PermissionModel {
-    addPermissionToDatabase      : AddPermissionToDatabase,
+    addPermissionToDatabase      : ( permission:PermissionDto) => Promise<PermissionDto>,
     getPermissionFromDatabase    : GetPermissionFromDatabase,
     updatePermissionToDatabase   : UpdatePermissionToDatabase,
     deletePermissionFromDatabase : DeletePermissionFromDatabase
@@ -33,7 +33,7 @@ class Permission implements PermissionModel{
             throw error
         }
     }
-    public async getPermission (permissionId:Number){
+    public async getPermission (permissionId:number){
         try {
             return await this.getPermissionFromDatabase( permissionId );   
         } catch (error) {
@@ -47,7 +47,7 @@ class Permission implements PermissionModel{
             throw error
         }
     }
-    public async deletePermission (permissionId:Number){
+    public async deletePermission (permissionId:number){
         try {
             return await this.deletePermissionFromDatabase( permissionId );   
         } catch (error) {

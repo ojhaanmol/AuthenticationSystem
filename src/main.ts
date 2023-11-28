@@ -1,4 +1,4 @@
-import Model,{PermissionDto,UserserDto,RoleDto} from './Model';
+import Model,{PermissionDto,UserDto,RoleDto} from './Model';
 
 import {addPermission,getPermission,updatePermission,deletePermission} from './ArrayTypeReposotory/Permission.reposotory';
 import {addRole,getRole,updateRole,deleteRole} from './ArrayTypeReposotory/Role.reposotory';
@@ -23,6 +23,8 @@ const main = async ()=>{
     permission.getPermission
     permission.updatePermission
     permission.deletePermission
+
+    console.log(`main Done`);
 }
 
 main()

@@ -9,47 +9,47 @@ type UpdatePermissionToDatabase   = ( permission:PermissionDto) => Promise<Permi
 type DeletePermissionFromDatabase = ( permissionId:number ) => Promise<PermissionDto>
 
 interface PermissionModel {
-    addPermissionToDatabase      : ( permission:PermissionDto) => Promise<PermissionDto>,
+    addPermissionToDatabase      : AddPermissionToDatabase,
     getPermissionFromDatabase    : GetPermissionFromDatabase,
     updatePermissionToDatabase   : UpdatePermissionToDatabase,
     deletePermissionFromDatabase : DeletePermissionFromDatabase
 }
 
-class Permission implements PermissionModel{
-    addPermissionToDatabase      : AddPermissionToDatabase
-    getPermissionFromDatabase    : GetPermissionFromDatabase
-    updatePermissionToDatabase   : UpdatePermissionToDatabase
-    deletePermissionFromDatabase : DeletePermissionFromDatabase
-    constructor( addPermission : AddPermissionToDatabase, getPermission : GetPermissionFromDatabase, updatePermission : UpdatePermissionToDatabase, deletePermission : DeletePermissionFromDatabase){
-        this.addPermissionToDatabase = addPermission,
-        this.getPermissionFromDatabase = getPermission,
-        this.updatePermissionToDatabase = updatePermission,
-        this.deletePermissionFromDatabase = deletePermission
+class Permission {
+    private addPermissionService    : AddPermissionToDatabase
+    private getPermissionService    : GetPermissionFromDatabase
+    private updatePermissionService : UpdatePermissionToDatabase
+    private deletePermissionService : DeletePermissionFromDatabase
+    constructor(permissionServices : PermissionModel){
+        this.addPermissionService    = permissionServices.addPermissionToDatabase,
+        this.getPermissionService    = permissionServices.getPermissionFromDatabase,
+        this.updatePermissionService = permissionServices.updatePermissionToDatabase,
+        this.deletePermissionService = permissionServices.deletePermissionFromDatabase
     }
     public async addPermission (permission:PermissionDto){
         try {
-            return await this.addPermissionToDatabase( permission );   
+            return await this.addPermissionService( permission );   
         } catch (error) {
             throw error
         }
     }
     public async getPermission (permissionId:number){
         try {
-            return await this.getPermissionFromDatabase( permissionId );   
+            return await this.getPermissionService( permissionId );   
         } catch (error) {
             throw error
         }
     }
     public async updatePermission (permission:PermissionDto){
         try {
-            return await this.updatePermissionToDatabase(  permission );   
+            return await this.updatePermissionService(  permission );   
         } catch (error) {
             throw error
         }
     }
     public async deletePermission (permissionId:number){
         try {
-            return await this.deletePermissionFromDatabase( permissionId );   
+            return await this.deletePermissionService( permissionId );   
         } catch (error) {
             throw error
         }
@@ -57,4 +57,4 @@ class Permission implements PermissionModel{
 }
 
 export default Permission;
-export {PermissionDto}
+export {PermissionDto,PermissionModel}

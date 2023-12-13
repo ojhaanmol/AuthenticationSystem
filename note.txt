@@ -1,0 +1,15 @@
+User       => Signin -----> login -------> Dashboard
+Admin      => Signin -----> login -------> CRUD( user , Manager, Guest, Moderator) 
+Manager    => Signin -----> login -------> CRUD( user , Guest)
+Guest      => Signin -----> Prototype of Dashboard
+Moderator  => Signin -----> login -------> CRUD( guest, User)
+
+
+user
+User => Signin ---> HashPassword ---> addUserinDatabase ---> mapUserIdToRoleDatabase
+User => Login ---> getUserByUserNameFromDatabase ---> compareHashedPasswords ---> getRoleFromUserRoleMappingTableInDatabase ---> compareRolesAsUser ---> GenerateAccessTokenAndRefreshToken ---> storeRefreshTokenInDatabase
+User => Dashboard ---> accessToken ---> verifyAccessToken ---> verifyRole ---> userOperation
+
+Admin => Signin ---> HashPassword ---> addUserinDatabase ---> mapUserIdToRoleDatabase
+Admin => login ---> getUserByUserNameFromDatabase ---> compareHashedPasswords ---> getRoleFromUserRoleMappingTableInDatabase ---> compareRolesAsAdmin ---> GenerateAccessTokenAndRefreshToken ---> storeRefreshTokenInDatabase
+Admin => Dashboard ---> ---> accessToken ---> verifyAccessToken ---> verifyRoleAsAdmin ---> CRUD( user , Manager, Guest, Moderator)

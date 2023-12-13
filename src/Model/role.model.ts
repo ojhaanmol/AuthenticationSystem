@@ -16,42 +16,42 @@ interface RoleModel {
     deleteRoleFromDatabase : DeleteRoleFromDatabase
 }
 
-class Role implements RoleModel{
-    addRoleinDatabase      : AddRoleInDatabase
-    getRoleFromDatabase    : GetRoleFromDatabase
-    updateRoleInDatabase   : UpdateRoleInDatabase
-    deleteRoleFromDatabase : DeleteRoleFromDatabase
-    constructor(addRole:AddRoleInDatabase, getRole:GetRoleFromDatabase, updateRole:UpdateRoleInDatabase, deleteRole:DeleteRoleFromDatabase){
-        this.addRoleinDatabase      = addRole;
-        this.getRoleFromDatabase    = getRole;
-        this.updateRoleInDatabase   = updateRole;
-        this.deleteRoleFromDatabase = deleteRole;
+class Role {
+    private addRoleService    :AddRoleInDatabase      
+    private getRoleService    :GetRoleFromDatabase    
+    private updateRoleService :UpdateRoleInDatabase   
+    private deleteRoleService :DeleteRoleFromDatabase 
+    constructor(role : RoleModel){
+        this.addRoleService    = role.addRoleinDatabase;
+        this.getRoleService    = role.getRoleFromDatabase;
+        this.updateRoleService = role.updateRoleInDatabase;
+        this.deleteRoleService = role.deleteRoleFromDatabase;
     }
 
     public async addRole (role:RoleDto) {
         try {
-            return await this.addRoleinDatabase( role );   
+            return await this.addRoleService( role );   
         } catch (error) {
             throw error;
         }
     } 
     public async getRole (roleId:number) {
         try {
-            return await this.getRoleFromDatabase( roleId );   
+            return await this.getRoleService( roleId );   
         } catch (error) {
             throw error;
         }
     } 
     public async updateRole (role:RoleDto) {
         try {
-            return await this.updateRoleInDatabase( role );   
+            return await this.updateRoleService( role );   
         } catch (error) {
             throw error;
         }
     } 
     public async deleteRole (roleId:number) {
         try {
-            return await this.deleteRoleFromDatabase( roleId );   
+            return await this.deleteRoleService( roleId );   
         } catch (error) {
             throw error;
         }
@@ -59,4 +59,4 @@ class Role implements RoleModel{
 }
 
 export default Role
-export {RoleDto};
+export {RoleDto,RoleModel};

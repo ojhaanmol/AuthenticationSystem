@@ -1,13 +1,13 @@
 import Model,{PermissionDto,UserDto,RoleDto} from './Model';
 
-import {addPermission,getPermission,updatePermission,deletePermission} from './ArrayTypeReposotory/Permission.reposotory';
-import {addRole,getRole,updateRole,deleteRole} from './ArrayTypeReposotory/Role.reposotory';
-import {addUser,getUser,updateUser,deleteUser} from './ArrayTypeReposotory/User.reposotory';
+import PermissionRepo from './ArrayTypeReposotory/Permission.reposotory';
+import RoleRepo from './ArrayTypeReposotory/Role.reposotory';
+import UserRepo from './ArrayTypeReposotory/User.reposotory';
 
 const main = async ()=>{
-    const permission = new Model.Permision(addPermission,getPermission,updatePermission,deletePermission);
-    const user = new Model.User(addUser,getUser,updateUser,deleteUser);
-    const role = new Model.Role(addRole, getRole, updateRole, deleteRole);
+    const permission = new Model.Permision(new PermissionRepo());
+    const user = new Model.User( new UserRepo());
+    const role = new Model.Role( new RoleRepo() );
 
     user.addAUser
     user.getUser
@@ -23,6 +23,8 @@ const main = async ()=>{
     permission.getPermission
     permission.updatePermission
     permission.deletePermission
+
+    /* */ 
 
     console.log(`main Done`);
 }

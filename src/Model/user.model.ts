@@ -22,22 +22,22 @@ interface UserModel {
     deleteUseFromDatabase : DeleteUseFromDatabas
 }
 
-class User implements UserModel{
-    addUserInDatabase: AddUserInDatabase;
-    getUserFromDatabase: GetUserFromDatabase;
-    updateUserInDatabase: UpdateUserInDatabase;
-    deleteUseFromDatabase: DeleteUseFromDatabas;
+class User{
+    private addUserService: AddUserInDatabase;
+    private getUserService: GetUserFromDatabase;
+    private updateUserService: UpdateUserInDatabase;
+    private deleteUseService: DeleteUseFromDatabas;
 
-    constructor(addUser : AddUserInDatabase, getUser : GetUserFromDatabase, updateUser : UpdateUserInDatabase, deleteUser : DeleteUseFromDatabas){
-        this.addUserInDatabase = addUser;
-        this.getUserFromDatabase = getUser;
-        this.updateUserInDatabase = updateUser;
-        this.deleteUseFromDatabase = deleteUser;
+    constructor(usersService:UserModel){
+        this.addUserService    = usersService.addUserInDatabase;
+        this.getUserService    = usersService.getUserFromDatabase;
+        this.updateUserService = usersService.updateUserInDatabase;
+        this.deleteUseService  = usersService.deleteUseFromDatabase;
     }
 
     public async addAUser(user:UserDto){
         try {
-            return await this.addUserInDatabase(user);
+            return await this.addUserService(user);
         } catch (error) {
             throw error
         }
@@ -45,7 +45,7 @@ class User implements UserModel{
 
     public async getUser(userId:number){
         try {
-            return await this.getUserFromDatabase(userId)
+            return await this.getUserService(userId)
         } catch (error) {
             throw error
         }
@@ -53,7 +53,7 @@ class User implements UserModel{
 
     public async updateUser(user:UserDto){
         try {
-            return await this.updateUserInDatabase(user)
+            return await this.updateUserService(user)
         } catch (error) {
             throw error
         }
@@ -61,7 +61,7 @@ class User implements UserModel{
 
     public async deleteUser(userId:number){
         try {
-            return await this.deleteUseFromDatabase(userId)
+            return await this.deleteUseService(userId)
         } catch (error) {
             throw error
         }
@@ -69,4 +69,4 @@ class User implements UserModel{
 }
 
 export default User;
-export {UserDto}
+export {UserDto,UserModel}

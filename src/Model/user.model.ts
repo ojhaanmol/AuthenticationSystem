@@ -10,60 +10,103 @@ type UserDto = {
     isActive    : boolean
 }
 
-type AddUserInDatabase    = ( user : UserDto ) => Promise<UserDto>
-type GetUserFromDatabase  = ( userId : number ) => Promise<UserDto>
-type UpdateUserInDatabase = ( user : UserDto ) => Promise<UserDto>
-type DeleteUseFromDatabas = ( userId : number ) => Promise<UserDto>
+type AddUserInDatabase             = ( user : UserDto ) => Promise<UserDto>
+type GetUserFromDatabase           = ( userId : number ) => Promise<UserDto>
+type UpdateUserInDatabase          = ( user : UserDto ) => Promise<UserDto>
+type DeleteUseFromDatabas          = ( userId : number ) => Promise<UserDto>
+type MapUserIdWithRoleIdIndatabase = ( roleId : number , userId : number) => Promise<UserDto>
+type GetUserByUserNameService      = ( userName: string) => Promise<UserDto>
 
 interface UserModel {
     addUserInDatabase     : AddUserInDatabase,
     getUserFromDatabase   : GetUserFromDatabase,
     updateUserInDatabase  : UpdateUserInDatabase,
-    deleteUseFromDatabase : DeleteUseFromDatabas
+    deleteUseFromDatabase : DeleteUseFromDatabas,
+    mapToUserHasRole      : MapUserIdWithRoleIdIndatabase;
+    getByUserName         : GetUserByUserNameService
 }
 
 class User{
-    private addUserService: AddUserInDatabase;
-    private getUserService: GetUserFromDatabase;
-    private updateUserService: UpdateUserInDatabase;
-    private deleteUseService: DeleteUseFromDatabas;
+
+    private user: UserDto = {
+        userId      : NaN,
+        name        : "",
+        userName    : "",
+        password    : "",
+        email       : "",
+        token       : "",
+        time        : "",
+        isInSession : false,
+        isActive    : false
+    };
+
+    private addUserService           : AddUserInDatabase;
+    private getUserService           : GetUserFromDatabase;
+    private updateUserService        : UpdateUserInDatabase;
+    private deleteUseService         : DeleteUseFromDatabas;
+    private mapUserWithRoleService   : MapUserIdWithRoleIdIndatabase;
+    private getUserByUserNameService : GetUserByUserNameService;
 
     constructor(usersService:UserModel){
-        this.addUserService    = usersService.addUserInDatabase;
-        this.getUserService    = usersService.getUserFromDatabase;
-        this.updateUserService = usersService.updateUserInDatabase;
-        this.deleteUseService  = usersService.deleteUseFromDatabase;
+        this.addUserService             = usersService.addUserInDatabase;
+        this.getUserService             = usersService.getUserFromDatabase;
+        this.updateUserService          = usersService.updateUserInDatabase;
+        this.deleteUseService           = usersService.deleteUseFromDatabase;
+        this.mapUserWithRoleService     = usersService.mapToUserHasRole;
+        this.getUserByUserNameService   = usersService.getByUserName;
     }
 
     public async addAUser(user:UserDto){
         try {
-            return await this.addUserService(user);
+            this.user = await this.addUserService(user);
+            return this.user;
         } catch (error) {
-            throw error
+            throw error;
         }
     }
 
     public async getUser(userId:number){
         try {
-            return await this.getUserService(userId)
+            this.user =  await this.getUserService(userId);
+            return this.user;
         } catch (error) {
-            throw error
+            throw error;
         }
     }
 
     public async updateUser(user:UserDto){
         try {
-            return await this.updateUserService(user)
+            this.user =   await this.updateUserService(user);
+            return this.user;
         } catch (error) {
-            throw error
+            throw error;
         }
     }
 
     public async deleteUser(userId:number){
         try {
-            return await this.deleteUseService(userId)
+            this.user = await this.deleteUseService(userId);
+            return this.user
         } catch (error) {
-            throw error
+            throw error;
+        }
+    }
+
+    public async hasRole(roleId:number){
+        try {
+            this.user = await this.mapUserWithRoleService(roleId,this.user.userId);
+            return this.user
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public async getUserByUserName(userName:string){
+        try {
+            this.user = await this.getUserByUserNameService(userName)
+            return this.user;
+        } catch (error) {
+            throw error;
         }
     }
 }

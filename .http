@@ -1,0 +1,4 @@
+post http://localhost:4009/user
+Content-Type: application/json
+
+{"Hii":"Hello"}

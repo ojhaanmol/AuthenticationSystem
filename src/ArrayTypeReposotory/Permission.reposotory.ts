@@ -1,3 +1,5 @@
+import {PermissionDto,PermissionModel} from '../Model'
+
 const permissionList: PermissionDto[] = [
     {
       permissionId: 1,
@@ -19,34 +21,31 @@ const permissionList: PermissionDto[] = [
       permissionId: 5,
       permissionName: 'Execute',
     },
-  ];
+];
 
-type PermissionDto = {
-    permissionId   : number,
-    permissionName : string
-}
-  
-const addPermission = async (permission:PermissionDto):Promise<PermissionDto> => {
+class PermissionRepo implements PermissionModel{
+  addPermissionToDatabase = async (permission:PermissionDto):Promise<PermissionDto> => {
     permissionList.push(permission);
     return permission;
 }
-const getPermission = async (permissionId: number):Promise<PermissionDto> => {
+getPermissionFromDatabase = async (permissionId: number):Promise<PermissionDto> => {
     try {
         return permissionList.filter(permission => permission.permissionId === permissionId)[0]
     } catch (error) {
         throw `permission Not Found`
     }
 }
-const updatePermission = async (permission: PermissionDto):Promise<PermissionDto> => {
+updatePermissionToDatabase = async (permission: PermissionDto):Promise<PermissionDto> => {
     try {
         return permission;
     } catch (error) {
         throw `permission Not Found`
     }
 }
-const deletePermission = async (permissionId : number):Promise<PermissionDto> => { return permissionList.filter(permission => permissionId === permission.permissionId)[0] }
+deletePermissionFromDatabase = async (permissionId : number):Promise<PermissionDto> => { return permissionList.filter(permission => permissionId === permission.permissionId)[0] }
 
-export { addPermission ,getPermission ,updatePermission ,deletePermission }
+}
+export default PermissionRepo;
 
 
 

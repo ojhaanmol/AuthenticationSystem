@@ -1,8 +1,12 @@
-type RoleDto = {
-    roleId      : number,
-    roleName    : string,
-    description : string
-}
+/*
+User       => Signin -----> login -------> Dashboard
+Admin      => Signin -----> login -------> CRUD( user , Manager, Guest, Moderator) 
+Manager    => Signin -----> login -------> CRUD( user , Guest)
+Guest      => Signin -----> Prototype of Dashboard
+Moderator  => Signin -----> login -------> CRUD( guest, User)
+*/ 
+
+import {RoleDto,RoleModel} from '../Model'
 
 const roleList: RoleDto[] = [
     {
@@ -32,24 +36,49 @@ const roleList: RoleDto[] = [
     },
 ];
 
-const addRole = async (role:RoleDto):Promise<RoleDto> => {
+
+
+class RoleRepo implements RoleModel{
+  addRoleinDatabase = async (role:RoleDto):Promise<RoleDto> => {
     roleList.push(role);
     return role;
-}
-const getRole = async (roleId: number):Promise<RoleDto> => {
+  }
+  getRoleFromDatabase = async (roleId: number):Promise<RoleDto> => {
     try {
         return roleList.filter(role => role.roleId === roleId)[0]
     } catch (error) {
         throw `role Not Found`
     }
-}
-const updateRole = async (role: RoleDto):Promise<RoleDto> => {
+  }
+  updateRoleInDatabase = async (role: RoleDto):Promise<RoleDto> => {
     try {
         return role;
     } catch (error) {
         throw `role Not Found`
     }
 }
-const deleteRole = async (roleId : number):Promise<RoleDto> => { return roleList.filter(role => roleId === role.roleId)[0] }
+  deleteRoleFromDatabase = async (roleId : number):Promise<RoleDto> => { return roleList.filter(role => roleId === role.roleId)[0] }
 
-export { addRole ,getRole ,updateRole ,deleteRole }
+}
+
+// const addRole = async (role:RoleDto):Promise<RoleDto> => {
+//     roleList.push(role);
+//     return role;
+// }
+// const getRole = async (roleId: number):Promise<RoleDto> => {
+//     try {
+//         return roleList.filter(role => role.roleId === roleId)[0]
+//     } catch (error) {
+//         throw `role Not Found`
+//     }
+// }
+// const updateRole = async (role: RoleDto):Promise<RoleDto> => {
+//     try {
+//         return role;
+//     } catch (error) {
+//         throw `role Not Found`
+//     }
+// }
+// const deleteRole = async (roleId : number):Promise<RoleDto> => { return roleList.filter(role => roleId === role.roleId)[0] }
+
+export default RoleRepo;

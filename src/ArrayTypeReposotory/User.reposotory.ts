@@ -1,4 +1,7 @@
-const userList = [
+
+import {UserDto,UserModel} from '../Model'
+
+const userList : UserDto[]= [
     { userId: 1, name: "User1", userName: "user1", password: "pass1", email: "user1@example.com", token: "token1", time: "2023-11-27T12:00:00", isInSession: true, isActive: true },
     { userId: 2, name: "User2", userName: "user2", password: "pass2", email: "user2@example.com", token: "token2", time: "2023-11-27T13:00:00", isInSession: false, isActive: true },
     { userId: 3, name: "User3", userName: "user3", password: "pass3", email: "user3@example.com", token: "token3", time: "2023-11-27T14:00:00", isInSession: true, isActive: false },
@@ -11,39 +14,43 @@ const userList = [
     { userId: 10, name: "User10", userName: "user10", password: "pass10", email: "user10@example.com", token: "token10", time: "2023-11-27T21:00:00", isInSession: false, isActive: true }
 ];
 
-type UserserDto = {
-    userId      : number,
-    name        : string,
-    userName    : string,
-    password    : string,
-    email       : string,
-    token       : string,
-    time        : string,
-    isInSession : boolean,
-    isActive    : boolean
-}
-  
-const addUser = async (user:UserserDto):Promise<UserserDto> => {
-    userList.push(user);
-    return user;
-}
-const getUser = async (userId: number):Promise<UserserDto> => {
-    try {
-        return userList.filter(user => user.userId === userId)[0]
-    } catch (error) {
-        throw `User Not Found`
-    }
-}
-const updateUser = async (user: UserserDto):Promise<UserserDto> => {
-    try {
+class UserRepo implements UserModel{
+    addUserInDatabase = async (user:UserDto):Promise<UserDto> => {
+        userList.push(user);
         return user;
-    } catch (error) {
-        throw `user Not Found`
+    }
+    getUserFromDatabase = async (userId: number):Promise<UserDto> => {
+        try {
+            return userList.filter(user => user.userId === userId)[0]
+        } catch (error) {
+            throw `User Not Found`
+        }
+    }
+    updateUserInDatabase = async (user: UserDto):Promise<UserDto> => {
+        try {
+            return user;
+        } catch (error) {
+            throw `user Not Found`
+        }
+    }
+    deleteUseFromDatabase = async (userId : number):Promise<UserDto> => { return userList.filter(user => userId === user.userId)[0] }
+    mapToUserHasRole = async(roleId: number, userId:number):Promise<UserDto> => {
+        try {
+            throw `not Implemented`;
+        } catch (error) {
+            throw error
+        }
+    };
+    getByUserName = async (userName:string):Promise<UserDto> => {
+        try {
+            throw `Not Implemented`;
+        } catch (error) {
+            throw error;
+        }
     }
 }
-const deleteUser = async (userId : number):Promise<UserserDto> => { return userList.filter(user => userId === user.userId)[0] }
 
-export { addUser ,getUser ,updateUser ,deleteUser }
+export default UserRepo
 
 
 

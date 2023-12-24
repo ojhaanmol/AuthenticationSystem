@@ -13,6 +13,8 @@ const signinTestData = {
     isActive    : true,
     role        : 'User'
 }
+const SECRETKEYS = `CreateSecretKey`;
+type RoleIdObject = { roleId : number }
 
 const Hashing = async (hashingData:string) => {
     try {
@@ -22,6 +24,44 @@ const Hashing = async (hashingData:string) => {
         throw new Error(error)
     }
 }
+/** Use Jwt node_module*/
+const generateTokens = async(SECRETKEYS:string,user:UserDto)=>{
+    try {
+        return ['refreshToken','AccessToken']
+    } catch (error:any) {
+       throw new Error(error);   
+    }
+}
+const getUserDataFromJWT = async(token:string) => {
+    try {
+        token;
+        return {
+            userId      : NaN,
+            name        : 'test User 001',
+            userName    : 'testUser001',
+            password    : 'simplePassword',
+            email       : 'random@gmail.com',
+            token       : '',
+            time        : ''+new Date(),
+            isInSession : false,
+            isActive    : true,
+            role        : 'User'
+        }
+    } catch (error:any) {
+        throw new Error(error)
+    }
+}
+
+const refreshTheToken = async(userData:object) => {
+    userData;
+    return `vjszkvjzc`;
+}
+
+const validateArgsUser = (argument:object,user:object) =>{
+    argument
+    user
+    return true
+}
 
 class UserController {
     protected user
@@ -29,60 +69,47 @@ class UserController {
         this.user = new Model.User( new UserRepo() );
     }
 
-    public signin = async(argument:UserDto) => {
+    public signin = async(argument: UserDto & RoleIdObject) => {
         try {
-            /** validate(atgument);*/ 
+            /** validate(argument);*/ 
             argument.password = await Hashing(argument.password);
             const {userId} = await this.user.addAUser(argument);
             userId
-            /**  add await this.user.addToRoleHasPermission(perMissionId) */ 
+            return await this.user.hasRole(argument.roleId);
         } catch (error:any) {
             throw new Error(error)
         }
     }
     public login = async (argument:UserDto) => {
         try {
-            /** 
-             * validate(argument);
-             * const user = await getUserByUserName( argument.userName );
-             * if(!user)
-             * throw `user Not Found`;
-             * if(!user.isActive)
-             * throw `user is Inactive`;
-             * if(user.password !== await Hashing(argument.password) ) 
-             * throw `credentials are invalid`;
-             * const [refresh,access]= await generateTokens(SECRETKEYS,user);
-             * user.token = refresh;
-             * user.isInSession = true;
-             * updateUser( user );
-             * return {token:{refresh,access},user}
-             * */ 
-            argument;
-            throw `Not Implemented`;
+            // validate(argument);
+            const user = await this.user.getUserByUserName( argument.userName );
+            if(!user)
+            throw `user Not Found`;
+            if(!user.isActive)
+            throw `user is Inactive`;
+            if(user.password !== await Hashing(argument.password) ) 
+            throw `credentials are invalid`;
+            const [refresh,access]= await generateTokens(SECRETKEYS,user);/** get SECRETKEYS from environment*/
+            user.token = refresh;
+            user.isInSession = true;
+            this.user.updateUser( user );
+            return {token:{refresh,access},user}
         } catch (error:any) {
             throw new Error(error)
         }
     }
-    public dashboard = async (argument:UserDto) => {
+    public refreshToken = async (argument:UserDto) => {
         try {
-            /**
-             * validate(argument)
-             * const user = await getUserByUserName( arguments.userName );
-             * if(!user)
-             * throw `user Not Found`;
-             * if(!user.isActive)
-             * throw `user is Inactive`;
-             * const role = await getRoleId( user );
-             * if(roleId !== argument.roleId)
-             * throw `unauthorized`;
-             * if(!await validate(user.token))
-             * throw `unauthorized`;
-             * return user;
-             * */ 
-            argument;
-            throw `Not Implemented`;
+            // validate(argument);
+            const user = getUserDataFromJWT( argument.token );
+            validateArgsUser(argument,user);
+            const userData = await this.user.getUserByUserName(argument.userName);
+            if(!userData.isActive)`user is inactive`;
+            return await refreshTheToken(argument);
+
         } catch (error:any) {
-            throw new Error(error)
+            throw new Error(error);
         }
     }
 }

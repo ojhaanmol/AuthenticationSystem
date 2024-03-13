@@ -36,14 +36,15 @@ class UserRepo implements UserModel{
     deleteUseFromDatabase = async (userId : number):Promise<UserDto> => { return userList.filter(user => userId === user.userId)[0] }
     mapToUserHasRole = async(roleId: number, userId:number):Promise<UserDto> => {
         try {
-            throw `not Implemented`;
+            return userList[9]
         } catch (error) {
             throw error
         }
     };
     getByUserName = async (userName:string):Promise<UserDto> => {
         try {
-            throw `Not Implemented`;
+        
+            return userList[9]
         } catch (error) {
             throw error;
         }

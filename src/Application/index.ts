@@ -8,8 +8,8 @@ const routes = new Routes
 
 const app = express();
 
-app.use(cors);
-app.use(json())
+app.use(cors());
+app.use(json());
 
 app.use('/user',routes.userRouter);
 

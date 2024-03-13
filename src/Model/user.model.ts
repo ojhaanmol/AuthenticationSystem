@@ -103,7 +103,8 @@ class User{
 
     public async getUserByUserName(userName:string){
         try {
-            this.user = await this.getUserByUserNameService(userName)
+            this.user = await this.getUserByUserNameService(userName);console.log(106,this.user);
+            
             return this.user;
         } catch (error) {
             throw error;

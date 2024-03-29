@@ -1,4 +1,5 @@
-import UserRepo from '../ArrayTypeReposotory/User.reposotory';
+// import UserRepo from '../ArrayTypeReposotory/User.reposotory';// remove this
+import UserRepo from '../DatabaseService/User.repo';
 import {Request,Response} from 'express';
 import Model,{UserDto} from '../Model'
 
@@ -74,16 +75,17 @@ class UserController {
 
     public signin = async(body:Request['body'],header:Request['headers'],param:Request['params'],query:Request['query']) => {
         try {
+            const {name,userName,password,email,time} = body;
             const argument:UserDto & RoleIdObject = {
                 userId: NaN,
-                name: "",
-                userName: "",
-                password: "",
-                email: "",
+                name,
+                userName,
+                password,
+                email,
                 token: "",
-                time: "",
+                time,
                 isInSession: false,
-                isActive: false,
+                isActive: true,
                 roleId: 0
             };
             

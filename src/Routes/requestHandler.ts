@@ -10,6 +10,7 @@ const handleRequest = (controllerFunction : ControllerFunction) =>{
             response.json( {statusCode:1,statusMessage:'Success',data:controllerfunctionOutput} );
             return;
         } catch (error) {
+            
             response.json( {statusCode:0,statusMessage:'Failure'} ); 
             console.log(`do proper Error Handling for ${__filename}`)
         }

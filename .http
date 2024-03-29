@@ -1,13 +1,13 @@
 post http://localhost:4009/user/signin
 Content-Type: application/json
 
-{"userId":1,"name":"User1","userName":"user1","password":"pass1","email":"user1@example.com","token":"token1","time":"2023-11-27T12:00:00","isInSession":true,"isActive":true}
+{"userId":1,"name":"User5","userName":"user5","password":"pass3","email":"user5@example.com","token":"token3","time":"2023-11-27T12:00:00","isInSession":true,"isActive":true}
 
 ###
 post http://localhost:4009/user/login
 Content-Type: application/json
 
-{"userId":1,"name":"User1","userName":"user1","password":"pass1","email":"user1@example.com","token":"token1","time":"2023-11-27T12:00:00","isInSession":true,"isActive":true}
+{"userId":1,"name":"User5","userName":"user5","password":"user5","email":"user5@example.com","token":"token1","time":"2023-11-27T12:00:00","isInSession":true,"isActive":true}
 
 ###
 

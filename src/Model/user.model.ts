@@ -10,7 +10,9 @@ type UserDto = {
     isActive    : boolean
 }
 
-type AddUserInDatabase             = ( user : UserDto ) => Promise<UserDto>
+type RoleIdObject = { roleId : number }
+
+type AddUserInDatabase             = ( user : UserDto&RoleIdObject ) => Promise<UserDto>
 type GetUserFromDatabase           = ( userId : number ) => Promise<UserDto>
 type UpdateUserInDatabase          = ( user : UserDto ) => Promise<UserDto>
 type DeleteUseFromDatabas          = ( userId : number ) => Promise<UserDto>
@@ -56,7 +58,7 @@ class User{
         this.getUserByUserNameService   = usersService.getByUserName;
     }
 
-    public async addAUser(user:UserDto){
+    public async addAUser(user:UserDto & RoleIdObject){
         try {
             this.user = await this.addUserService(user);
             return this.user;
@@ -103,8 +105,7 @@ class User{
 
     public async getUserByUserName(userName:string){
         try {
-            this.user = await this.getUserByUserNameService(userName);console.log(106,this.user);
-            
+            this.user = await this.getUserByUserNameService(userName);
             return this.user;
         } catch (error) {
             throw error;
@@ -113,4 +114,4 @@ class User{
 }
 
 export default User;
-export {UserDto,UserModel}
+export {UserDto,UserModel,RoleIdObject}

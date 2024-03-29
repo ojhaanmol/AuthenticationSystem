@@ -53,3 +53,5 @@ coverage/
 # Ignore dependencies installed via npm or yarn
 package-lock.json
 yarn-error.log
+
+Dist/

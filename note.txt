@@ -13,3 +13,19 @@ User => refreshToken ---> refreshToken ---> verifyToken ---> verifyRole ---> sea
 Admin => Signin ---> HashPassword ---> addUserinDatabase ---> mapUserIdToRoleDatabase
 Admin => login ---> getUserByUserNameFromDatabase ---> compareHashedPasswords ---> getRoleFromUserRoleMappingTableInDatabase ---> compareRolesAsAdmin ---> GenerateAccessTokenAndRefreshToken ---> storeRefreshTokenInDatabase
 Admin => Dashboard ---> ---> accessToken ---> verifyAccessToken ---> verifyRoleAsAdmin ---> CRUD( user , Manager, Guest, Moderator)
+
+
+=========================================================================
+        DATABASE
+=========================================================================
+
+    npm i prisma
+    npm i pg
+    prisma init 
+    prisma migration dev
+    
+    env DATABASE_URL="database://user:password@host:port"
+
+=========================================================================
+    
+=========================================================================

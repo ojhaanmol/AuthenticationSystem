@@ -1,5 +1,5 @@
-// import UserRepo from '../ArrayTypeReposotory/User.reposotory';// remove this
 import UserRepo from '../DatabaseService/User.repo';
+import { generateTokens, generateRefreshToken} from '../jsonWebToken';
 import {Request,Response} from 'express';
 import Model,{UserDto} from '../Model'
 
@@ -27,14 +27,6 @@ const Hashing = async (hashingData:string) => {
         throw new Error(error)
     }
 }
-/** Use Jwt node_module*/
-const generateTokens = async(SECRETKEYS:string,user:UserDto)=>{
-    try {
-        return ['refreshToken','AccessToken']
-    } catch (error:any) {
-       throw new Error(error);   
-    }
-}
 const getUserDataFromJWT = async(token:string) => {
     try {
         token;
@@ -53,11 +45,6 @@ const getUserDataFromJWT = async(token:string) => {
     } catch (error:any) {
         throw new Error(error)
     }
-}
-
-const refreshTheToken = async(userData:object) => {
-    userData;
-    return `vjszkvjzc`;
 }
 
 const validateArgsUser = (argument:object,user:object) =>{
@@ -109,7 +96,7 @@ class UserController {
             throw `user is Inactive`;
             if(user.password !== await Hashing(body.password) ) 
             throw `credentials are invalid`;
-            const [refresh,access]= await generateTokens(SECRETKEYS,user);/** get SECRETKEYS from environment*/
+            const [access, refresh] = generateTokens(user,SECRETKEYS);
             user.token = refresh;
             user.isInSession = true;
             this.user.updateUser( user );
@@ -126,7 +113,7 @@ class UserController {
             validateArgsUser(body,user);
             const userData = await this.user.getUserByUserName(body.userName);
             if(!userData.isActive)`user is inactive`;
-            return await refreshTheToken(body);
+            return generateRefreshToken(body,SECRETKEYS);
         } catch (error:any) {
             throw new Error(error);
         }

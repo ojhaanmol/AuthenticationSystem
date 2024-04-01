@@ -14,4 +14,4 @@ Content-Type: application/json
 post http://localhost:4009/user/refreshToken
 Content-Type: application/json
 
-{"userId":1,"name":"User1","userName":"user1","password":"pass1","email":"user1@example.com","token":"token1","time":"2023-11-27T12:00:00","isInSession":true,"isActive":true}
+{"userId":1,"name":"User5","userName":"user5","password":"pass5","email":"user5@example.com","token":"token5","time":"2023-11-27T12:00:00","isInSession":true,"isActive":true}

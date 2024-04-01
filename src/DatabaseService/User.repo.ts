@@ -43,11 +43,8 @@ class UserRepo implements UserModel{
             );
             if(!user) throw `User Not Found`;
             return user;
-            // return defRet;
-            // throw `\n\ngetUserFromDatabase \n not implementd \n13: ${__filename}`
-            // // return userList.filter(user => user.userId === userId)[0]
         } catch (error) {
-            throw `User Not Found`
+            throw error
         } finally {
             await prisma.$disconnect();
         }
@@ -55,24 +52,22 @@ class UserRepo implements UserModel{
     updateUserInDatabase = async (user: UserDto):Promise<UserDto> => {
         try {
             return defRet;
-            throw `\n\nupdateUserInDatabase \n not implementd \n21: ${__filename}`
-            // return user;
         } catch (error) {
             throw `user Not Found`
+        } finally {
+            await prisma.$disconnect();
         }
     }
     deleteUseFromDatabase = async (userId : number):Promise<UserDto> => {
         return defRet;
-        throw `\n\ndeleteUseFromDatabase \n not implementd \n28: ${__filename}`
-        // return userList.filter(user => userId === user.userId)[0] 
     }
-    mapToUserHasRole = async(roleId: number, userId:number):Promise<UserDto> => {
+    mapToUserHasRole = async(roleId: number, userId: number):Promise<UserDto> => {
         try {
             return defRet;
-            throw `\n\nmapToUserHasRole \n not implementd \n33: ${__filename}`
-            // return userList[9]
         } catch (error) {
             throw error
+        } finally {
+            await prisma.$disconnect();
         }
     };
     getByUserName = async (userName:string):Promise<UserDto> => {

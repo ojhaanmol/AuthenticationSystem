@@ -1,5 +1,5 @@
 import {config} from 'dotenv';
 const environment = {
-    "JWT_SECRET_KET" : config()?.parsed?.JWT_SECRET_KET || '',
+    "JWT_SECRET_KEY" : config()?.parsed?.JWT_SECRET_KEY || '',
 }
 export default environment;

@@ -1,20 +1,9 @@
 import UserRepo from '../DatabaseService/User.repo';
 import { generateTokens, generateRefreshToken} from '../jsonWebToken';
+import Model,{UserDto} from '../Model';
+import {generateIV, generateSalt, hashWithSaltAndIV, verifyHash} from '../passwordHashing';
 import {Request,Response} from 'express';
-import Model,{UserDto} from '../Model'
 
-const signinTestData = {
-    userId      : NaN,
-    name        : 'test User 001',
-    userName    : 'testUser001',
-    password    : 'simplePassword',
-    email       : 'random@gmail.com',
-    token       : '',
-    time        : ''+new Date(),
-    isInSession : false,
-    isActive    : true,
-    role        : 'User'
-}
 const SECRETKEYS = `CreateSecretKey`;
 type RoleIdObject = { roleId : number }
 
@@ -75,8 +64,9 @@ class UserController {
                 isActive: true,
                 roleId: 0
             };
-            
-            argument.password = await Hashing(body.password);
+            const iv = generateIV();
+            const salt = generateSalt();
+            argument.password  = [hashWithSaltAndIV( argument.password, salt, iv),salt,iv.toString('hex')].join(':');
             const {userId} = await this.user.addAUser(argument);
             userId
             return await this.user.hasRole(argument.roleId);
@@ -94,7 +84,10 @@ class UserController {
             throw `user Not Found`;
             if(!user.isActive)
             throw `user is Inactive`;
-            if(user.password !== await Hashing(body.password) ) 
+            const [hashedPassword, salt, iv] = user.password.split(':');//<=========make iv string and store
+
+            const isPasswordValid  = verifyHash(body.password, user.password, salt, Buffer.from(iv,'hex'));
+            if( !isPasswordValid ) 
             throw `credentials are invalid`;
             const [access, refresh] = generateTokens(user,SECRETKEYS);
             user.token = refresh;

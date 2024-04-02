@@ -5,6 +5,7 @@ const userRouter = Router();
 
 userRouter.post('/signin',handleRequest(new UserController().signin));
 userRouter.post('/login',handleRequest(new UserController().login));
-userRouter.post('/refreshToken',handleRequest(new UserController().refreshToken))
+userRouter.post('/refreshToken',handleRequest(new UserController().refreshToken));
+userRouter.post('/logout',handleRequest(new UserController().logout))
 
 export default userRouter;

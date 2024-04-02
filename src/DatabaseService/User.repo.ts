@@ -51,6 +51,12 @@ class UserRepo implements UserModel{
     }
     updateUserInDatabase = async (user: UserDto):Promise<UserDto> => {
         try {
+            await prisma.user.update({
+                where : {
+                    userId : user.userId
+                },
+                data: user
+            })
             return defRet;
         } catch (error) {
             throw `user Not Found`

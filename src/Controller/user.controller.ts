@@ -3,19 +3,11 @@ import { generateTokens, generateRefreshToken} from '../jsonWebToken';
 import Model,{UserDto} from '../Model';
 import {generateIV, generateSalt, hashWithSaltAndIV, verifyHash} from '../passwordHashing';
 import {Request,Response} from 'express';
+import environment from "../Environment";
 
-const SECRETKEYS = `CreateSecretKey`;
+const {JWT_SECRET_KEY} = environment;
 type RoleIdObject = { roleId : number }
 
-const Hashing = async (hashingData:string) => {
-    try {
-        return 'pass10'
-        if (!hashingData) throw `invalid hashing data`;
-        return hashingData + '.hashed';
-    } catch (error:any) {
-        throw new Error(error)
-    }
-}
 const getUserDataFromJWT = async(token:string) => {
     try {
         token;
@@ -84,15 +76,16 @@ class UserController {
             throw `user Not Found`;
             if(!user.isActive)
             throw `user is Inactive`;
-            const [hashedPassword, salt, iv] = user.password.split(':');//<=========make iv string and store
-
-            const isPasswordValid  = verifyHash(body.password, user.password, salt, Buffer.from(iv,'hex'));
+            if(user.isInSession)
+            throw `user is already in Session`;
+            const [hashedPassword, salt, iv] = user.password.split(':');
+            const isPasswordValid  = verifyHash(body.password, hashedPassword, salt, Buffer.from(iv,'hex'));
             if( !isPasswordValid ) 
             throw `credentials are invalid`;
-            const [access, refresh] = generateTokens(user,SECRETKEYS);
+            const [access, refresh] = generateTokens(user,JWT_SECRET_KEY);
             user.token = refresh;
             user.isInSession = true;
-            this.user.updateUser( user );
+            await this.user.updateUser( user );
             return {token:{refresh,access},user}
         } catch (error:any) {
         
@@ -106,9 +99,21 @@ class UserController {
             validateArgsUser(body,user);
             const userData = await this.user.getUserByUserName(body.userName);
             if(!userData.isActive)`user is inactive`;
-            return generateRefreshToken(body,SECRETKEYS);
+            return generateRefreshToken(body,JWT_SECRET_KEY);
         } catch (error:any) {
             throw new Error(error);
+        }
+    }
+
+    public logout = async (body:Request['body'],header:Request['headers'],param:Request['params'],query:Request['query']) => {
+        try {
+            const user = await this.user.getUserByUserName( body.userName );
+            user.token = ''
+            user.isInSession = false;
+            await this.user.updateUser( user );
+            return user;
+        } catch (error:any) {
+            throw new Error(error)
         }
     }
 }
